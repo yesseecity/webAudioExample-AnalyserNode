@@ -1,8 +1,11 @@
 var audio = {};
-var dataArray, dataArray2;
+var frequencyBuffer, frequencyBuffer2;
 var biquadFilter = {};
-var bufferLength, dataArray;
+var bufferLength;
 var audioEnable = false;
+var analyserType = "byte"; // byte, float
+var fftSize = 2048;
+
 
 function getMicrophone(){
   function onError (res) {
@@ -16,7 +19,7 @@ function getMicrophone(){
     
     // Create a MediaStreamAudioSourceNode
     // Feed the HTMLMediaElement into it
-    console.log('%c Sample Rate:'+myAudioContext.sampleRate , 'font-size: 50px;');
+    // console.log('%c Sample Rate:'+myAudioContext.sampleRate , 'font-size: 50px;');
     $('#sampleRate').val(myAudioContext.sampleRate);
     
     audio.gainNode = myAudioContext.createGain();
@@ -27,12 +30,21 @@ function getMicrophone(){
     audio.analyser = myAudioContext.createAnalyser();
     audio.analyser.minDecibels = -90;
     audio.analyser.maxDecibels = -10;
-    audio.analyser.fftSize = 2048;
+    audio.analyser.fftSize = fftSize;
 //     audio.analyser.smoothingTimeConstant = 0; //0 to 1, default is 0.8;
     
     bufferLength = audio.analyser.frequencyBinCount;
-    dataArray = new Uint8Array(bufferLength);
-    dataArray2 = new Uint8Array(bufferLength);
+
+    switch (analyserType) {
+      case'byte':
+        frequencyBuffer = new Uint8Array(bufferLength);
+        frequencyBuffer2 = new Uint8Array(bufferLength);
+        break;
+      case'float':
+        frequencyBuffer = new Float32Array(bufferLength);
+        frequencyBuffer2 = new Float32Array(bufferLength);
+        break;
+    }
     
     
     // Connect speaker to audio source
@@ -89,7 +101,14 @@ function drawFreqDomain() {
   freqDomainCell.ctx.clearRect(0, 0, freqDomainCell.canvas.width, freqDomainCell.canvas.height);
   if(!audioEnable)return;
   
-  audio.analyser.getByteFrequencyData(dataArray);
+  switch (analyserType) {
+    case'byte':
+      audio.analyser.getByteFrequencyData(frequencyBuffer);
+      break;
+    case'float':
+      audio.analyser.getFloatFrequencyData(frequencyBuffer);
+      break;
+  }
 
   var barWidth = (freqDomainCell.canvas.width / bufferLength) * 2.5;
   var barHeight;
@@ -97,7 +116,7 @@ function drawFreqDomain() {
   
 
   for(var i = 0; i < bufferLength; i++) {
-    barHeight = dataArray[i];
+    barHeight = frequencyBuffer[i];
     
     freqDomainCell.ctx.fillStyle = 'rgb(' + (barHeight+100) + ',50,50)';
     freqDomainCell.ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
@@ -113,7 +132,15 @@ function drawTimeDomain() {
   timeDomainCell.ctx.clearRect(0, 0, freqDomainCell.canvas.width, freqDomainCell.canvas.height);
   if(!audioEnable)return;
   
-  audio.analyser.getByteTimeDomainData(dataArray2);
+  switch (analyserType) {
+    case'byte':
+      audio.analyser.getByteTimeDomainData(frequencyBuffer2);
+      break;
+    case'float':
+      audio.analyser.getFloatTimeDomainData(frequencyBuffer2);
+      break;
+  }
+
   timeDomainCell.ctx.lineWidth = 2;
   timeDomainCell.ctx.strokeStyle = 'rgb(0, 0, 0)';
 
@@ -124,7 +151,7 @@ function drawTimeDomain() {
 
   for(var i = 0; i < bufferLength; i++) {
 
-    var v = dataArray2[i] / 128.0;
+    var v = frequencyBuffer2[i] / 128.0;
     var y = v * timeDomainCell.canvas.height/2;
 
     if(i === 0) {
