@@ -9,6 +9,7 @@ function getMicrophone(){
     console.log('callback res:', res);
   }
   function onSuccess (stream) {
+    initCanvas()
     audioEnable = true;
     audio.stream = stream;
     
@@ -75,6 +76,7 @@ var timeDomainCell = {};
 
 function initCanvas () {
   freqDomainCell.canvas = document.getElementById("freqDomain");
+  // debugger;
   freqDomainCell.ctx = freqDomainCell.canvas.getContext("2d");
   freqDomainCell.canvas.width = 600;
   freqDomainCell.canvas.height = 200;
@@ -142,6 +144,7 @@ function drawTimeDomain() {
   window.requestAnimationFrame(drawTimeDomain);
 }
 
-initCanvas();
+// initCanvas();
+
 // animeloop();
 //-----------------Canvas end---------------------
