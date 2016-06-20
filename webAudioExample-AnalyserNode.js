@@ -1,7 +1,7 @@
 var audio = {};
 var dataArray, dataArray2;
 var biquadFilter = {};
-var bufferLength, dataArray;
+var bufferLength;
 var audioEnable = false;
 
 function getMicrophone(){
@@ -65,8 +65,27 @@ function changeVolume() {
 }  
 
 
+//-----------------Frequency analysis start-------------------
+function freqAnalys() {
+  var rms = 0;
+
+  audio.analyser.frequencyBuffer = new Float32Array(audio.analyser.fftSize);
+  this.frequencyBuffer = audio.analyser.frequencyBuffer;
+  // Fill up the data.
+  audio.analyser.getFloatTimeDomainData(frequencyBuffer);
 
 
+  // Figure out the root-mean-square, or rms, of the audio. Basically
+  // this seems to be the amount of signal in the buffer.
+  for (var d = 0; d < this.frequencyBuffer.length; d++) {
+    rms += this.frequencyBuffer[d] * this.frequencyBuffer[d];
+  }
+
+  rms = Math.sqrt(rms / this.frequencyBuffer.length);
+
+
+}
+//-----------------Frequency analysis end-------------------
 
 
 //-----------------Canvas start-------------------
