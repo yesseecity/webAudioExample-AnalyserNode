@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
+  <script src="jquery-3.1.1.min.js"></script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <title>webAudioExample-AnalyserNode</title>
@@ -12,27 +12,44 @@
   
   <h1>Web Audio API test - For Firefox</h1>
   
-  <div class="buttons">
+  <div class="block buttons">
     <button onclick='getMicrophone()'>get Microphone</button>
 
     <button onclick="stop()">Stop local stream</button>
     
     <button onclick="mute()">mute</button>
   </div>
-  <div>
+
+
+  <div class="block">
     <h3>Info</h3>
-    <p>Sample Rate: <input id="sampleRate" readonly="true"></input></p>
-  </div>
-  <div>
-    <h3>Canvas - Frequency Domain</h3>
-    <canvas id="freqDomain"></canvas>
-  </div>
-  <div>
-    <h3>Canvas - Time Domain</h3>
-    <canvas id="timeDomain"></canvas>
+    <table>
+      <tbody>
+        <tr>
+          <th>Sample Rate: </th>
+          <td><output id="sampleRate"></output></td>
+        </tr>
+        <tr>
+          <th>Frequency: </th>
+          <td><output id="frequency"></output></td>
+        </tr>
+      </tbody>
+    </table>
   </div>
   
-  <div>
+  <div class="block canvas">
+    <div class="block freq">
+      <h3>Canvas - Frequency Domain</h3>
+      <canvas id="freqDomain"></canvas>
+    </div>
+    
+    <div class="block time">
+      <h3>Canvas - Time Domain</h3>
+      <canvas id="timeDomain"></canvas>
+    </div>
+  </div> 
+  
+  <div class="block">
     <h3>Option</h3>
     Gain Node value (main volume) <br>
     0<input type="range" value="5" max="20" min="0" id="gainNodeVolume" onchange="changeVolume()">20

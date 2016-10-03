@@ -29,7 +29,7 @@ function getMicrophone(){
     audio.analyser.minDecibels = -90;
     audio.analyser.maxDecibels = -10;
     audio.analyser.fftSize = 2048;
-//     audio.analyser.smoothingTimeConstant = 0; //0 to 1, default is 0.8;
+    // audio.analyser.smoothingTimeConstant = 0; //0 to 1, default is 0.8;
     
     bufferLength = audio.analyser.frequencyBinCount;
     dataArray = new Uint8Array(bufferLength);
@@ -39,7 +39,7 @@ function getMicrophone(){
     // Connect speaker to audio source
     audio.source.connect(audio.analyser);
     audio.analyser.connect(audio.gainNode);
-    audio.gainNode.connect(myAudioContext.destination);
+    // audio.gainNode.connect(myAudioContext.destination);
     
     
     
@@ -97,12 +97,12 @@ function initCanvas () {
   freqDomainCell.canvas = document.getElementById("freqDomain");
   // debugger;
   freqDomainCell.ctx = freqDomainCell.canvas.getContext("2d");
-  freqDomainCell.canvas.width = 600;
+  freqDomainCell.canvas.width = 500;
   freqDomainCell.canvas.height = 200;
   
   timeDomainCell.canvas = document.getElementById("timeDomain");
   timeDomainCell.ctx = timeDomainCell.canvas.getContext("2d");
-  timeDomainCell.canvas.width = 600;
+  timeDomainCell.canvas.width = 500;
   timeDomainCell.canvas.height = 200;
 }
 
@@ -167,3 +167,10 @@ function drawTimeDomain() {
 
 // animeloop();
 //-----------------Canvas end---------------------
+
+
+// (
+// function () {
+//   getMicrophone();
+// }
+// )()

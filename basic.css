@@ -5,8 +5,17 @@ div {
   border: 1px solid black;
   margin: 5px;
   padding: 5px;
-  min-width: 650px;
 }
 canvas {
   background-color: #fff;
+}
+
+.block {
+    width: 600px;
+}
+.block.canvas {
+    width: auto;
+}
+.block.freq, .block.time {
+    display: inline-block;
 }
